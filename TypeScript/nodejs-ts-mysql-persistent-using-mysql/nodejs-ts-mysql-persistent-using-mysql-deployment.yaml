@@ -1,0 +1,72 @@
+apiVersion: apps/v1  # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: nodejs-ts-mysql-using-mysql
+  labels:
+    app: nodejs-ts-mysql-using-mysql
+spec:
+  selector:
+    matchLabels:
+      app: nodejs-ts-mysql-using-mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nodejs-ts-mysql-using-mysql
+    spec:
+      containers:
+      - image: phillin77/k8s-nodejs-ts-mysql-ex:v0.1.0
+        imagePullPolicy: IfNotPresent
+        name: nodejs-ts-mysql
+        env:
+          - name: DATABASE_SERVICE_NAME
+            value: mysql
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: database-user
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: database-password
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: database-root-password
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: database-name
+        ports:
+          - containerPort: 8080
+            name: nodejs-ts-mysql
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 3
+          timeoutSeconds: 3
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 30
+          timeoutSeconds: 3
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        terminationMessagePath: /dev/termination-log
