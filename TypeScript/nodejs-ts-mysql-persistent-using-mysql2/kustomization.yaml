@@ -1,0 +1,8 @@
+# namePrefix: prod-
+# nameSuffix: -v1
+resources:
+- mysql-secret.yaml
+- mysql-service.yaml
+- mysql-deployment.yaml
+- nodejs-ts-mysql-persistent-using-mysql2-service.yaml
+- nodejs-ts-mysql-persistent-using-mysql2-deployment.yaml
