@@ -1,0 +1,5 @@
+namePrefix: prod-
+nameSuffix: -v1
+resources:
+- nodejs-ts-only-service.yaml
+- nodejs-ts-only-deployment.yaml

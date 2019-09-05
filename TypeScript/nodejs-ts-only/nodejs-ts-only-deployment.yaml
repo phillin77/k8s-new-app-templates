@@ -1,0 +1,50 @@
+apiVersion: apps/v1  # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: nodejs-ts-only
+  labels:
+    app: nodejs-ts-only
+spec:
+  selector:
+    matchLabels:
+      app: nodejs-ts-only
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nodejs-ts-only
+    spec:
+      containers:
+      - image: phillin77/k8s-nodejs-ts-only-ex:v0.1.0
+        imagePullPolicy: IfNotPresent
+        name: nodejs-ts-only
+        env:
+        ports:
+          - containerPort: 8080
+            name: nodejs-ts-only
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 3
+          timeoutSeconds: 3
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 30
+          timeoutSeconds: 3
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        terminationMessagePath: /dev/termination-log
