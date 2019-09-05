@@ -27,5 +27,5 @@ TypeScript (Node.js ONLY, NO DATABASE) Kubernetes App Example
         kubectl get pods
         kubectl port-forward <pod name> 8080:8080
 
-        curl http://loalhost/
+        curl http://loalhost:8080/
 
