@@ -11,7 +11,10 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/data/mysql"
+    # path: /data/mysql
+    # Test on Docker for Desktop (macOS) using File Sharing path
+    path: /docker-data-volume/mysql
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
