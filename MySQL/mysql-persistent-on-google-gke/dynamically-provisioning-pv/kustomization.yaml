@@ -1,0 +1,7 @@
+namePrefix: prod-
+nameSuffix: -v1
+resources:
+- mysql-pv.yaml
+- mysql-secret.yaml
+- mysql-service.yaml
+- mysql-deployment.yaml

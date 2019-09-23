@@ -1,0 +1,13 @@
+# Dynamically provisioning PersistentVolumes 
+# (讓 K8S 處理 PV 的配置，自動建立 
+# 類型是 gcePersistentDisk 的 PersistentVolume(PV))
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
