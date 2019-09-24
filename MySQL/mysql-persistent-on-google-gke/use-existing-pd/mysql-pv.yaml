@@ -1,0 +1,32 @@
+# 可以先使用 gcloud compute disks list - 顯示這個專案所有的 GCE Persistent disks
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-gcp-pd-volume
+spec:
+  storageClassName: ""
+  capacity:
+    # TODO: Change the size for your Persistent Disk
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  gcePersistentDisk:
+    # TODO: Change the name for your Persistent Disk
+    pdName: gke-standard-cluster-1-pvc-a9eb1af9-ddf4-11e9-b8b6-42010a8c00d1
+    fsType: ext4
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+spec:
+  # It's necessary to specify "" as the storageClassName
+  # so that the default storage class won't be used, see
+  # https://kubernetes.io/docs/concepts/storage/persistent-volumes/#class-1
+  storageClassName: ""
+  volumeName: mysql-gcp-pd-volume
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
